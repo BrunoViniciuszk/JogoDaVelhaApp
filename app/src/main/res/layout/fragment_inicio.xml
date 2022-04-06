@@ -1,14 +1,35 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".fragment.FragmentInicio">
+    tools:context=".fragment.FragmentInicio"
+    android:orientation="vertical">
 
-    <!-- TODO: Update blank fragment layout -->
     <TextView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+        android:layout_height="wrap_content"
+        android:background="@color/blue_500"
+        android:text="Jogo Da Velha"
+        android:textAlignment="center"
+        android:textColor="@color/white"
+        android:textSize="30dp" />
 
-</FrameLayout>
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="500dp"
+        android:src="@drawable/veia" />
+
+    <Button
+        android:id="@+id/bt_jogar"
+        android:layout_width="250dp"
+        android:layout_marginLeft="80dp"
+        android:layout_height="50dp"
+        android:backgroundTint="@color/blue_500"
+        android:text="Jogar"
+        android:textColor="@color/white"
+        android:textSize="18dp" />
+
+
+</LinearLayout>
+

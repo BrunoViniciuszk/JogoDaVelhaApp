@@ -3,11 +3,16 @@ package br.senai.sp.cotia.myapplication.fragment;
 import android.graphics.Color;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.fragment.NavHostFragment;
 
 import android.renderscript.ScriptGroup;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -18,6 +23,7 @@ import java.util.Random;
 
 import br.senai.sp.cotia.myapplication.R;
 import br.senai.sp.cotia.myapplication.databinding.FragmentJogoBinding;
+import br.senai.sp.cotia.myapplication.util.PrefsUtil;
 
 
 public class FragmentJogo extends Fragment {
@@ -34,10 +40,16 @@ public class FragmentJogo extends Fragment {
     private Random random;
     // variavel da joagada
     private int numeroJogadas=0;
+    // variáveis para o placar
+    private int placarJog1=0;
+    private int placarJog2=0;
+    private int placarVelha=0;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        // habilita o menu
+        setHasOptionsMenu(true);
         // Instancia o binding
         binding = FragmentJogoBinding.inflate(inflater, container, false);
 
@@ -71,8 +83,12 @@ public class FragmentJogo extends Fragment {
         random = new Random();
 
         //define os simbolos dos jogadores
-        simbJog1 = "X";
-        simbJog2 = "O";
+        simbJog1 = PrefsUtil.getSimboloJog1(getContext());
+        simbJog2 = PrefsUtil.getSimboloJog2(getContext());
+
+        // altera o simbolo do jogador no placar
+        binding.jogador1.setText(getResources().getString(R.string.jog_1, simbJog1));
+        binding.jogador2.setText(getResources().getString(R.string.jog_2, simbJog2));
 
         // sorteia quem inicia o jogo
         sorteia();
@@ -146,6 +162,39 @@ public class FragmentJogo extends Fragment {
         return false;
     }
 
+    private void atualizarPlacar() {
+        binding.placar1.setText(placarJog1+"");
+        binding.placar2.setText(placarJog2+"");
+        binding.placarVelha.setText(placarVelha+"");
+    }
+
+    @Override
+    public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
+        inflater.inflate(R.menu.menu_main, menu);
+        super.onCreateOptionsMenu(menu, inflater);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        // verifica qual botao foi clicado no menu
+        switch (item.getItemId()){
+            // caso tenha clicado no resetar
+            case R.id.menu_resetar:
+                placarJog1 = 0;
+                placarJog2 = 0;
+                placarVelha = 0;
+                resetar();
+                atualizarPlacar();
+                break;
+            // caso tenha clicado no preferencias
+            case R.id.menu_pref:
+                NavHostFragment.findNavController(FragmentJogo.this).navigate(R.id.action_fragmentJogo_to_prefFragment);
+                break;
+        }
+
+
+        return true;
+    }
 
     private View.OnClickListener listenerBotoes = btPress-> {
         // incrementa as jogadas
@@ -175,11 +224,22 @@ public class FragmentJogo extends Fragment {
         if(numeroJogadas >= 5 && venceu()) {
             // exibe um Toast  informando que o jogador venceu
             Toast.makeText(getContext(), R.string.vencedor, Toast.LENGTH_LONG).show();
+            if(simbolo.equals(simbJog1)) {
+                placarJog1++;
+            }else {
+                placarJog2++;
+            }
+            // atualiza placar
+            atualizarPlacar();
             // resetar tabuleiro
             resetar();
+
         }else if(numeroJogadas == 9) {
             // exibe um Toast  informando que o jogador venceu
             Toast.makeText(getContext(), R.string.velha, Toast.LENGTH_SHORT).show();
+            placarVelha++;
+            // atualiza placar
+            atualizarPlacar();
             // resetar tabuleiro
             resetar();
         }else {

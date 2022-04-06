@@ -3,14 +3,14 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph"
-    app:startDestination="@id/fragmentJogo">
+    app:startDestination="@id/fragmentInicio">
     <fragment
         android:id="@+id/fragmentInicio"
         android:name="br.senai.sp.cotia.myapplication.fragment.FragmentInicio"
         android:label="fragment_inicio"
         tools:layout="@layout/fragment_inicio" >
         <action
-            android:id="@+id/action_fragmentInicio_to_fragmentJogo2"
+            android:id="@+id/action_fragmentInicio_to_fragmentJogo"
             app:destination="@id/fragmentJogo" />
     </fragment>
     <fragment

@@ -3,8 +3,21 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="br.senai.sp.cotia.myapplication.activity.MainActivity">
     <item
-        android:id="@+id/action_settings"
-        android:orderInCategory="100"
-        android:title="@string/action_settings"
+        android:id="@+id/menu_resetar"
+        android:title="@string/resetar"
+        android:icon="@android:drawable/ic_menu_revert"
+        app:showAsAction="always" />
+
+    <item
+        android:id="@+id/menu_inicio"
+        android:title="@string/tela_inicial"
+        android:icon="@android:drawable/ic_menu_close_clear_cancel"
+        app:showAsAction="never" />
+
+
+    <item
+        android:id="@+id/menu_pref"
+        android:title="@string/preferencias"
+        android:icon="@android:drawable/ic_menu_preferences"
         app:showAsAction="never" />
 </menu>
