@@ -8,6 +8,7 @@ import android.widget.Button;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.fragment.NavHostFragment;
 
@@ -31,4 +32,13 @@ public class FragmentInicio extends Fragment {
         return binding.getRoot();
     }
 
+    @Override
+    public void onStart() {
+        super.onStart();
+        // para sumir com a a toolbar
+        // pegar uma referencia do tipo AppCompatActivity
+        AppCompatActivity minhaActivity = (AppCompatActivity) getActivity();
+        // oculta a actionBar
+        minhaActivity.getSupportActionBar().hide();
+    }
 }

@@ -11,4 +11,10 @@
         android:title="@string/titulo_2"
         android:summary="@string/sumario_2"
         />
+
+    <androidx.preference.EditTextPreference
+        android:key="numRodadas"
+        android:title="@string/titulo_3"
+        android:summary="@string/sumario_3"
+        />
 </androidx.preference.PreferenceScreen>

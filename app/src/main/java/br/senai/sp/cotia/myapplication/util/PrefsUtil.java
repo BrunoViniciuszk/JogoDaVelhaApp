@@ -15,6 +15,11 @@ public class PrefsUtil {
         return preferences.getString("simbolo_jog_2","O");
     }
 
+    public static String numeroRodadas(Context context) {
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
+        return preferences.getString("numRodadas","O");
+    }
+
     public void salvarSimboloJog1(String simbolo, Context context) {
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
         SharedPreferences.Editor editor = preferences.edit();

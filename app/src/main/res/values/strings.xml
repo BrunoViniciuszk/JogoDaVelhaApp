@@ -4,6 +4,9 @@
     <string name="jog_1">Jogador 1 (%1$s)</string>
     <string name="jog_2">Jogador 2 (%1$s)</string>
     <string name="placar">Placar</string>
+    <string name="c">(%1$s)</string>
+    <string name="numRodadas">Número de Rodadas</string>
+    <string name="jogo">Ganhou o Jogo!!</string>
     <string name="placar_x">0</string>
     <string name="placar_O">0</string>
     <string name="placar_empate">0</string>
@@ -17,8 +20,10 @@
     <string name="qtd_velha">Empates</string>
     <string name="titulo_1">Simbolo do Jogador 1</string>
     <string name="titulo_2">Simbolo do Jogador 2</string>
+    <string name="titulo_3">Número de Rodadas</string>
     <string name="sumario_1">Escolha o simbolo do Jogador 1</string>
     <string name="sumario_2">Escolha o simbolo do Jogador 2</string>
+    <string name="sumario_3">Escolha o número de rodadas</string>
     <string name="titulo_game">Jogo da Velha TOP!</string>
     <string name="bt_frase">Jogar</string>
 </resources>

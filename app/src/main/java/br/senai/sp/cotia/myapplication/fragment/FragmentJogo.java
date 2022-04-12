@@ -1,14 +1,15 @@
 package br.senai.sp.cotia.myapplication.fragment;
 
+import android.content.DialogInterface;
 import android.graphics.Color;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.fragment.NavHostFragment;
 
-import android.renderscript.ScriptGroup;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -35,7 +36,7 @@ public class FragmentJogo extends Fragment {
     // variavel que representa o tabuleiro
     private String[][] tabuleiro;
     // variavel para os simbolos
-    private String simbJog1, simbJog2, simbolo;
+    private String simbJog1, simbJog2, simbolo, rodadas;
     // variavel random para sortear quem começa
     private Random random;
     // variavel da joagada
@@ -44,6 +45,7 @@ public class FragmentJogo extends Fragment {
     private int placarJog1=0;
     private int placarJog2=0;
     private int placarVelha=0;
+    private AlertDialog alerta;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -85,16 +87,51 @@ public class FragmentJogo extends Fragment {
         //define os simbolos dos jogadores
         simbJog1 = PrefsUtil.getSimboloJog1(getContext());
         simbJog2 = PrefsUtil.getSimboloJog2(getContext());
+        rodadas = PrefsUtil.numeroRodadas(getContext());
+
 
         // altera o simbolo do jogador no placar
         binding.jogador1.setText(getResources().getString(R.string.jog_1, simbJog1));
         binding.jogador2.setText(getResources().getString(R.string.jog_2, simbJog2));
+        binding.placarNum.setText(rodadas);
 
         // sorteia quem inicia o jogo
         sorteia();
 
         // atualizar vez
         atualizaVez();
+
+        //Cria o gerador do AlertDialog
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+
+        //define o titulo
+        builder.setTitle("Reset");
+
+        //define a mensagem
+        builder.setMessage("Deseja mesmo resetar?");
+
+        //define um botão como positivo
+        builder.setPositiveButton("Sim", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface arg0, int arg1) {
+                    placarJog1 = 0;
+                    placarJog2 = 0;
+                    placarVelha = 0;
+                    resetar();
+                    atualizarPlacar();
+            }
+        });
+
+        //define um botão como negativo.
+        builder.setNegativeButton("Não", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface arg0, int arg1) {
+                arg0.cancel();
+            }
+        });
+
+        //cria o AlertDialog
+        alerta = builder.create();
+
+
 
         // retorna a view do Fragment
         return  binding.getRoot();
@@ -180,15 +217,14 @@ public class FragmentJogo extends Fragment {
         switch (item.getItemId()){
             // caso tenha clicado no resetar
             case R.id.menu_resetar:
-                placarJog1 = 0;
-                placarJog2 = 0;
-                placarVelha = 0;
-                resetar();
-                atualizarPlacar();
+                alerta.show();
                 break;
             // caso tenha clicado no preferencias
             case R.id.menu_pref:
                 NavHostFragment.findNavController(FragmentJogo.this).navigate(R.id.action_fragmentJogo_to_prefFragment);
+                break;
+            case R.id.menu_inicio:
+                NavHostFragment.findNavController(FragmentJogo.this).navigate(R.id.action_fragmentJogo_to_fragmentInicio);
                 break;
         }
 
@@ -229,6 +265,7 @@ public class FragmentJogo extends Fragment {
             }else {
                 placarJog2++;
             }
+            minimoChance(rodadas);
             // atualiza placar
             atualizarPlacar();
             // resetar tabuleiro
@@ -256,4 +293,34 @@ public class FragmentJogo extends Fragment {
 
 
     };
+
+    private void minimoChance(String rodadas) {
+
+        int rod = Integer.parseInt(rodadas);
+        double metade;
+        metade = rod / 2.0;
+        if (placarJog1 > metade) {
+
+            Toast.makeText(getContext(), R.string.jogo, Toast.LENGTH_LONG).show();
+        } else if (placarJog2 > metade) {
+
+            Toast.makeText(getContext(), R.string.jogo, Toast.LENGTH_LONG).show();
+        } else {
+
+            atualizaVez();
+        }
+
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        // para sumir com a a toolbar
+        // pegar uma referencia do tipo AppCompatActivity
+        AppCompatActivity minhaActivity = (AppCompatActivity) getActivity();
+        // oculta a actionBar
+        minhaActivity.getSupportActionBar().show();
+        // retira o botao de voltar
+        minhaActivity.getSupportActionBar().setDisplayHomeAsUpEnabled(false);
+    }
 }
